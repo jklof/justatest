@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Say</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+        rel="stylesheet">
+
+        <style>
+            body {
+                padding: 50px;
+            }
+
+            .zz {
+                border: 1px solid rgb(0,0,0);
+                margin: 5px;
+                background-color: rgb(200,200,255);
+                
+                padding: 10px;
+            }
+
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+        <script src="client.js"></script>
+    </head>
+
+    <body ng-app="SayText">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9"><h4>Write phrase and press enter or <i>Say</i> button to hear it.</h4></div>
+            </div>
+            <div class="row" ng-controller="SayController">
+                <div class="col-md-6"><input class="form-control" type="text" ng-model="saytext" ng-keypress="keyPress($event)"></input></div>
+                <div class="col-md-3"><button class="btn btn-primary" ng-click="doSay()">Say</button></div>
+            </div>
+        </div>
+
+        <audio preload="none" id="say_snd" src="say" type="audio/mpeg"></audio>
+
+    </body>
+
+</html>

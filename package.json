@@ -1,0 +1,10 @@
+{
+  "name": "say",
+  "version": "0.0.0",
+  "description": "",
+  "main": "server.js",
+  "repository": "",
+  "author": "jlof",
+  "dependencies": {
+  }
+}
