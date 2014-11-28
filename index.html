@@ -12,12 +12,8 @@
                 padding: 50px;
             }
 
-            .zz {
-                border: 1px solid rgb(0,0,0);
-                margin: 5px;
-                background-color: rgb(200,200,255);
-                
-                padding: 10px;
+            .pad {
+                padding: 5px;
             }
 
         </style>
@@ -27,18 +23,19 @@
 
     <body ng-app="SayText">
 
-        <div class="container">
+        <div class="container"  ng-controller="SayController">
+            <h4>Write phrase and press enter or <i>Say</i> button to hear it.</h4>
             <div class="row">
-                <div class="col-md-9"><h4>Write phrase and press enter or <i>Say</i> button to hear it.</h4></div>
+                <div class="col-md-6 pad"><input class="form-control" type="text" ng-model="saytext" ng-keypress="keyPress($event)"></input></div>
+                <div class="col-md-1 pad"><button class="btn btn-primary" ng-click="doSay(saytext)">Say</button></div>
             </div>
-            <div class="row" ng-controller="SayController">
-                <div class="col-md-6"><input class="form-control" type="text" ng-model="saytext" ng-keypress="keyPress($event)"></input></div>
-                <div class="col-md-3"><button class="btn btn-primary" ng-click="doSay()">Say</button></div>
-            </div>
+            <br>
+            <div class="row" ng-repeat="h in sayhistory">
+                <div class="col-md-1 pad"><button class="bth btn-primary" ng-click="say(h.url)">Say</button></div>
+                <div class="col-md-6 pad">{{h.text}}</div>
+            </div> 
         </div>
 
         <audio preload="none" id="say_snd" src="say" type="audio/mpeg"></audio>
-
     </body>
-
 </html>
