@@ -5,21 +5,19 @@ var spawn = require('child_process').spawn;
 var express = require('express');
 var bodyparser = require('body-parser');
 
-// in c9 we need to use port and env from the environment..
-var PORT = process.env.PORT;
-var IP = process.env.IP;
-console.log("port=" + PORT + " ip=" + IP);
 
+
+// initialize express and bodyparser
 var app = express();
-
-// initialize bodyparser to get the data from POST
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 
+
 // start listening http service on the port
 var httpserver = http.createServer(app);
-httpserver.listen(PORT, IP, function() {
-    console.log("--- start ---");
+httpserver.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function() {
+  var addr = httpserver.address();
+  console.log("Server listening at", addr.address + ":" + addr.port);
 });
 
 
@@ -49,16 +47,38 @@ app.get("/client.js", function(req, res) {
     servefile(res, "text/javascript", "./client.js");
 });
 
+
+
+
 // Generate speech with espeak
 app.get("/say", function(req, res) {
 
-    var speech = req.param("text");
-    console.log("speak:" + speech);
+    var speech  = req.param("text", "");
+    var pitch   = req.param("pitch");
+    var speed   = req.param("speed");
+    var gap     = req.param("gap");
+    var voice   = req.param("voice");
+    var variant = req.param("variant");
+
+    var args = [speech, "--stdout"];
+
+    if (variant)
+        voice = (voice || "") + "+" + variant;
+    if (voice)
+        args.push("-v" + voice);
+    if (pitch)
+        args.push("-p"+pitch);
+    if (speed)
+        args.push("-s"+speed);
+    if (gap)
+        args.push("-g"+gap);
+
+    console.log("args" + JSON.stringify(args));
 
     res.header("Content-Type", "audio/mpeg");
 
     // spawn a task
-    var espeak = spawn("espeak", ["-ven-scottish+f2", speech, "--stdout"]);
+    var espeak = spawn("espeak", args);
     // TODO: further optimizations
     var ffmpeg = spawn("./bin/ffmpeg", ["-i", "-", "-ab", "32k", "-f", "mp3", "-"]);
 
