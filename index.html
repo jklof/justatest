@@ -24,7 +24,7 @@
     <body ng-app="SayText">
 
         <div class="container"  ng-controller="SayController">
-            <h4>Write phrase and press enter or <i>Say</i> button to hear it.</h4>
+            <h4>Say it!</h4>
             <div class="row">
                 <div class="col-md-6 pad"><input class="form-control" type="text" ng-model="saytext" ng-keypress="keyPress($event)"></input></div>
                 <div class="col-md-1 pad"><button class="btn btn-primary" ng-click="doSay(saytext)">Say</button></div>
